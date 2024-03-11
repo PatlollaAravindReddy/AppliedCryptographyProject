@@ -1,0 +1,13 @@
+CREATE TABLE patientsdata (
+    userId VARCHAR(50) PRIMARY KEY,
+    name VARCHAR(100),
+    phoneNumber VARCHAR(20),
+    email VARCHAR(100),
+    address VARCHAR(255)
+);
+
+CREATE TABLE userdetails (
+    userId VARCHAR(50) PRIMARY KEY,
+    userKey VARCHAR(100)
+);
+
