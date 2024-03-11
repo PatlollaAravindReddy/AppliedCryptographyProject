@@ -1,5 +1,6 @@
 package com.example.demo.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -74,6 +75,7 @@ public class Patient {
     private String address;
     @Column
     @Transient
+    @JsonIgnore
     private String key;
 
 }

@@ -35,11 +35,14 @@ public class encryption {
         return data;
     }
 
-    public String decryption(String key) throws Exception{
+    public Patient decryption(Patient patient, String key) throws Exception{
         Cipher cipher = Cipher.getInstance(constant.ALGORITHM);
         SecretKeySpec keySpec = new SecretKeySpec(key.getBytes(), constant.ALGORITHM);
         cipher.init(Cipher.DECRYPT_MODE, keySpec);
-        byte[] decryptedBytes = cipher.doFinal(Base64.getDecoder().decode(key));
-        return new String(decryptedBytes);
+        patient.setName(new String(cipher.doFinal(Base64.getDecoder().decode(patient.getName()))));
+        patient.setPhoneNumber(new String(cipher.doFinal(Base64.getDecoder().decode(patient.getPhoneNumber()))));
+        patient.setEmail(new String(cipher.doFinal(Base64.getDecoder().decode(patient.getEmail()))));
+        patient.setAddress(new String(cipher.doFinal(Base64.getDecoder().decode(patient.getAddress()))));
+        return patient;
     }
 }

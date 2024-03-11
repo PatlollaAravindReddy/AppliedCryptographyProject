@@ -3,6 +3,9 @@ package com.example.demo.service;
 
 import com.example.demo.dto.Patient;
 import com.example.demo.dto.userDetails;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -47,18 +50,21 @@ public class patientDetails {
             return key;
       }
 
-      public List<Patient> fetchPatientDetails(String userId) {
+      public Patient fetchPatientDetails(String userId) {
             Configuration cfg = new Configuration();
             cfg.configure();
             SessionFactory sf = cfg.buildSessionFactory();
             Session s = sf.openSession();
             Transaction ts = s.beginTransaction();
             System.out.println(userId);
-            Query<?> query = s.createQuery("SELECT * FROM userDetails WHERE userId = :userId");
-            query.setParameter("userId", userId);
-            List<Patient>  key = (List<Patient>) query.uniqueResult();
+            CriteriaBuilder builder = s.getCriteriaBuilder();
+            CriteriaQuery<Patient> criteriaQuery = builder.createQuery(Patient.class);
+            Root<Patient> root = criteriaQuery.from(Patient.class);
+            criteriaQuery.select(root)
+                    .where(builder.equal(root.get("userId"), userId));
+            List<Patient> patients = s.createQuery(criteriaQuery).getResultList();
             ts.commit();
             s.close();
-            return key;
+            return patients.get(0);
       }
 }

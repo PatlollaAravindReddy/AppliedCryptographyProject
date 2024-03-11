@@ -2,7 +2,6 @@ package com.example.demo.controller;
 
 
 import com.example.demo.dto.Patient;
-import jakarta.persistence.Id;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,8 +36,10 @@ public class EncryptionDecryptionController {
     @RequestMapping(method = RequestMethod.GET, path = "/getDetails")
     public ResponseEntity getPatientDetails(@RequestParam String userId) throws Exception {
         try {
-            List<Patient> key = patientDetails.fetchPatientDetails(userId);
-            return new ResponseEntity(HttpStatus.OK);
+            Patient patientData = patientDetails.fetchPatientDetails(userId);
+            String key  = patientDetails.fetchKeyDetails(userId);
+            Patient data = encryption.decryption(patientData, key);
+            return new ResponseEntity<>(data, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
