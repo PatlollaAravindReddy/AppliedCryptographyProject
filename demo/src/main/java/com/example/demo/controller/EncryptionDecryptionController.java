@@ -27,9 +27,9 @@ public class EncryptionDecryptionController {
         try {
             Patient data = encryption.aesEncryption(patient);
             patientDetails.storingPatientDetails(data);
-            return new ResponseEntity(HttpStatus.OK);
+            return new ResponseEntity("Success", HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("UserId exist,Please try with different userId", HttpStatus.BAD_REQUEST);
         }
     }
 
@@ -41,7 +41,7 @@ public class EncryptionDecryptionController {
             Patient data = encryption.decryption(patientData, key);
             return new ResponseEntity<>(data, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("UserId does't exist", HttpStatus.BAD_REQUEST);
         }
     }
 }
